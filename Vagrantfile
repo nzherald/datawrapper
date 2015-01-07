@@ -4,6 +4,24 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = '2'
 
+$provisioning_script = <<SCRIPT
+echo 'Provisioning...'
+export DEBIAN_FRONTEND=noninteractive
+apt-get install apache2 php5 php5-mysql mysql-server nodejs npm -y -q
+cd /vagrant
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install
+mysql -u root -e 'create database datawrapper;'
+cp lib/core/build/conf/datawrapper-conf.php.master lib/core/build/conf/datawrapper-conf.php
+cp config.template.yaml config.yaml
+npm install
+ln -s /usr/bin/nodejs /usr/bin/node # https://github.com/joyent/node/issues/3911
+make clean
+make
+date > /etc/vagrant_provisioned_at
+SCRIPT
+
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
@@ -24,6 +42,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+
+  config.vm.provision 'shell', inline: $provisioning_script
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
