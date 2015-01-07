@@ -26,3 +26,4 @@ node_modules/*
 scripts/lib/execute_jobs.lock
 .vagrant/
 scripts/execute_jobs.lock
+composer.phar
