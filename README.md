@@ -29,6 +29,23 @@ Which will ensure that you have the `vagrant-dns` plugin installed.
 Which will register a DNS resolver for local development, resolving
 `.local` domains.
 
+Then run
+
+```
+  vagrant up
+```
+
+to boot the virtual machine
+
+## Tidying up
+
+To remove the DNS configuration run:
+
+```
+   vagrant dns --uninstall
+   vagrant dns --purge
+```
+
 ## Contact
 
 * IRC: #datawrapper on [freenode.net](https://webchat.freenode.net/)
