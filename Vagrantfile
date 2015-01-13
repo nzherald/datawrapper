@@ -7,7 +7,10 @@ VAGRANTFILE_API_VERSION = '2'
 $provisioning_script = <<SCRIPT
 echo 'Provisioning...'
 export DEBIAN_FRONTEND=noninteractive
-apt-get install apache2 php5 php5-mysql mysql-server nodejs npm -y -q
+apt-get install apache2 php5 php5-mysql mysql-server nodejs npm git -y -q
+# git is required due to https://github.com/datawrapper/datawrapper/blob/master/lib/utils/add_header_vars.php#L213
+a2enmod rewrite
+service apache2 restart
 cd /vagrant
 curl -sS https://getcomposer.org/installer | php
 php composer.phar install
@@ -20,10 +23,11 @@ ln -s /usr/bin/nodejs /usr/bin/node # https://github.com/joyent/node/issues/3911
 make clean
 make
 php scripts/plugin.php install "*"
-rm /var/www/html/index.html
-rm /etc/apache2/sites-enabled/000-default.conf
 cp bootstrap/datawrapper.conf /etc/apache2/sites-available/datawrapper.conf
-ln -s /etc/apache2/sites-available/datawrapper.conf /etc/apaches2/sites-enabled/datawrapper.conf
+ln -s /etc/apache2/sites-available/datawrapper.conf /etc/apache2/sites-enabled/datawrapper.conf
+cp -R /vagrant /var/www/datawrapper
+chown -R www-data:www-data /var/www/datawrapper
+service apache2 restart
 date > /etc/vagrant_provisioned_at
 SCRIPT
 
