@@ -7,6 +7,7 @@ VAGRANTFILE_API_VERSION = '2'
 $provisioning_script = <<SCRIPT
 echo 'Provisioning...'
 export DEBIAN_FRONTEND=noninteractive
+apt-get update
 apt-get install apache2 php5 php5-mysql mysql-server nodejs npm git -y -q
 # git is required due to https://github.com/datawrapper/datawrapper/blob/master/lib/utils/add_header_vars.php#L213
 a2enmod rewrite
