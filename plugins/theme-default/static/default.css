@@ -15,7 +15,7 @@ body.chart {
     font-family: Helvetica Neue, Arial;
     font-weight: 400;
     font-size: 12px;
-    margin: 0 5px;
+    margin: 0 0px;
     background: #fff;
 }
 
@@ -109,6 +109,18 @@ a img { border:0px; }
     content: ": ";
 }
 
+.dw-chart-notes {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.chart.theme-default .dw-chart-notes {
+    font-style: italic;
+    margin-bottom: 5px;
+    position: relative;
+    margin-top: 10px;
+}
+
 #footer {
     font-size: 11px;
     color: #888;
@@ -117,6 +129,10 @@ a img { border:0px; }
     z-index: 1100;
     /* Sets the background here to propagate it to its children */
     background:transparent;
+}
+
+.chart.theme-default #footer .footer-left {
+    left: 0;
 }
 
 
